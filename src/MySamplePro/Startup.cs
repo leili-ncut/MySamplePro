@@ -20,8 +20,10 @@ using MySamplePro.Services;
 using Steeltoe.Extensions.Configuration.ConfigServer;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using MySamplePro.Consul;
 using Polly;
 using Swashbuckle.AspNetCore.Swagger;
+using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 using ILoggerFactory = Microsoft.Extensions.Logging.ILoggerFactory;
 using Info = MySamplePro.Model.Info;
 
@@ -69,10 +71,10 @@ namespace MySamplePro
             //5. 使用consul 注册服务
             services.AddSingleton<IHostedService, ConsulHostedService>();
             services.Configure<ConsulConfig>(Configuration.GetSection("ConsulConfig"));
-            services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulCongif =>
+            services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulConfig =>
             {
                 var address = Configuration["ConsulConfig:Address"];
-                consulCongif.Address = new Uri(address);
+                consulConfig.Address = new Uri(address);
             }));
             services.AddSingleton<Func<IConsulClient>>(p => () => new ConsulClient(consulConfig =>
             {
@@ -112,7 +114,7 @@ namespace MySamplePro
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILoggerFactory loggerFactory,IApplicationLifetime lifetime)
         {
             if (env.IsDevelopment())
             {
@@ -123,6 +125,36 @@ namespace MySamplePro
 
             // auth
             app.UseAuthentication();
+
+            #region register this service
+
+            //ConsulService consulService = new ConsulService()
+
+            //{
+
+            //    IP = Configuration["Consul:IP"],
+
+            //    Port = Convert.ToInt32(Configuration["Consul:Port"])
+
+            //};
+
+            //HealthService healthService = new HealthService()
+
+            //{
+
+            //    IP = Configuration["Service:IP"],
+
+            //    Port = Convert.ToInt32(Configuration["Service:Port"]),
+
+            //    Name = Configuration["Service:Name"],
+
+            //};
+
+            //app.RegisterConsul(lifetime, healthService, consulService);
+
+            #endregion
+
+
 
             app.UseMvc(routes =>
             {
