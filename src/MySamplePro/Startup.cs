@@ -125,6 +125,13 @@ namespace MySamplePro
 
             // auth
             app.UseAuthentication();
+            
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             #region register this service
 
@@ -156,12 +163,6 @@ namespace MySamplePro
 
 
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
         }
     }
 }
