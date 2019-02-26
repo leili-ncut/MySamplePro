@@ -13,7 +13,6 @@ namespace MySamplePro.Consul
         //步骤 1.服务注册
         //2. 在Starup类的Configure方法中，调用此扩展方法
         public static IApplicationBuilder RegisterConsul(this IApplicationBuilder app, IApplicationLifetime lifetime, HealthService healthService, ConsulService consulService)
-
         {
 
             var consulClient = new ConsulClient(x => x.Address = new Uri($"http://{consulService.IP}:{consulService.Port}"));//请求注册的 Consul 地址
