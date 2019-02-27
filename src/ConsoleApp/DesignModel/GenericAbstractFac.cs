@@ -174,6 +174,25 @@ namespace ConsoleApp
             return null;
         }
 
+        public static IAbstractFactory<YaBo, YaJia> ZhouheiyaFactory(string type)
+        {
+            if (type == "南昌")
+            {
+                return ConcretFactory.NewFactory(
+                    new OpNewFactory<YaBo, NanChangYaBo>(),
+                    new OpNewFactory<YaJia, NanChangYaJia>());
+            }
+            else if(type == "上海")
+            {
+                return ConcretFactory.NewFactory(
+                    new OpNewFactory<YaBo, ShangHaiYaBo>(),
+                    new OpNewFactory<YaJia, ShangHaiYaJia>());
+            }
+
+            return null;
+            
+        }
+
     }
 
     #endregion
