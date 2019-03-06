@@ -21,6 +21,7 @@ using Steeltoe.Extensions.Configuration.ConfigServer;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MySamplePro.Consul;
+using MySamplePro.Filter;
 using Polly;
 using Swashbuckle.AspNetCore.Swagger;
 using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
@@ -109,7 +110,8 @@ namespace MySamplePro
 
             var version = Configuration["Swagger.Version"];
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options => { options.Filters.Add<XcActionFilter>(); }) // 配置过滤器，使其生效
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
         }
 

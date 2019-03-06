@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MySamplePro.Services;
 using System.Collections.Generic;
+using MySamplePro.Model;
 
 namespace MySamplePro.Controllers
 {
@@ -50,6 +51,18 @@ namespace MySamplePro.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        /// <summary>
+        /// 测试模型验证
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("check_model")]
+        public IActionResult TestModelCheck(DaiBanParaPoco model)
+        {
+            return Ok("");
         }
     }
 }

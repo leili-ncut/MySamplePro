@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ConsoleApp
 {
+    // http://ninputer.cnblogs.com/archive/2006/01/12/315890.html
     #region abstract
 
     /// <summary>
