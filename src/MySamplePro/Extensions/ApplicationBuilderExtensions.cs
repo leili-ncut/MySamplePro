@@ -43,7 +43,7 @@ namespace MySamplePro.Extensions
             //服务启动时注册，内部实现其实就是使用 Consul API 进行注册（HttpClient发起）
             consulClient.Agent.ServiceRegister(registration).Wait();
             //服务停止时取消注册
-            lifetime.ApplicationStopping.Register(() => { consulClient.Agent.ServiceDeregister(registration.ID).Wait(); })
+            lifetime.ApplicationStopping.Register(() => { consulClient.Agent.ServiceDeregister(registration.ID).Wait(); });
 
             return app;
         }
