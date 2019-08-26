@@ -21,6 +21,7 @@ using Steeltoe.Extensions.Configuration.ConfigServer;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MySamplePro.Consul;
+using MySamplePro.Extensions;
 using MySamplePro.Filter;
 using Polly;
 using Swashbuckle.AspNetCore.Swagger;
@@ -110,13 +111,18 @@ namespace MySamplePro
 
             var version = Configuration["Swagger.Version"];
 
+            //var sp = services.BuildServiceProvider();
+            //var dd = sp.GetService<IConfiguration>();
+            //dd.GetSection()
+
             services.AddMvc(options => { options.Filters.Add<XcActionFilter>(); }) // 配置过滤器，使其生效
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILoggerFactory loggerFactory,IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILoggerFactory loggerFactory,
+            IApplicationLifetime lifetime,IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -127,7 +133,8 @@ namespace MySamplePro
 
             // auth
             app.UseAuthentication();
-            
+
+           // app.RegisterWithConsul(lifetime, serviceProvider);
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
